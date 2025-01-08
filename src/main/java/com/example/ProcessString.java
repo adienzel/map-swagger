@@ -3,8 +3,8 @@ package com.example;
 import io.swagger.v3.oas.models.media.Schema;
 
 public class ProcessString {
-
-    public static void processStringVal(Schema s, StringBuilder pStr) {
+    private  ProcessString() {}
+    public static void processStringVal(Schema<?> s, StringBuilder pStr) {
         var description = s.getDescription();
         var format = s.getFormat();
         var pattern = s.getPattern();
@@ -14,21 +14,21 @@ public class ProcessString {
         var maxLength = s.getMaxLength();
         var defaultVal = s.getDefault();
         if (description != null) {
-            pStr.append(", description:" + description);
+            pStr.append(", description:").append(description);
         }
         if (format != null) {
-            pStr.append(", format:" + format);
+            pStr.append(", format:").append(format);
         }
         if (pattern != null) {
-            pStr.append(", pattern:" + pattern);
+            pStr.append(", pattern:").append(pattern);
         }
         if (nullable != null) {
-            pStr.append(", nullable:" + nullable.toString());
+            pStr.append(", nullable:").append(nullable.toString());
         }
         if (enumValues != null) {
             pStr.append(", ENUM: [");
             for (Object e : enumValues) {
-                pStr.append(e.toString() + ", ");
+                pStr.append(e.toString()).append(", ");
             }
             pStr.setLength(pStr.length() - 2);
             pStr.append("]");
@@ -37,19 +37,19 @@ public class ProcessString {
         if (examples != null) {
             pStr.append("example: [");
             for (Object o : examples) {
-                pStr.append(o.toString() + ", ");
+                pStr.append(o.toString()).append(", ");
             }
             pStr.setLength(pStr.length() - 2);
             pStr.append("]");
         }
         if (maxLength != null) {
-            pStr.append(", maxLength: " + maxLength.toString());
+            pStr.append(", maxLength: ").append(maxLength.toString());
         }
         if (minLength != null) {
-            pStr.append(", minLength: " + minLength.toString());
+            pStr.append(", minLength: ").append(minLength.toString());
         }
         if (defaultVal instanceof String) {
-            pStr.append("Default: " + defaultVal.toString());
+            pStr.append("Default: ").append(defaultVal.toString());
         }
 
     }

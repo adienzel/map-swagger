@@ -1,9 +1,11 @@
 package com.example;
 
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
+import org.slf4j.LoggerFactory;
+import ch.qos.logback.classic.Level;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -12,14 +14,20 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 
+import static com.example.ProcessArray.prossesArrayVal;
+import static com.example.ProcessBoolean.prossesBooleanVal;
 import static com.example.ProcessInteger.processIntegerVal;
 import static com.example.ProcessString.processStringVal;
 
 
-public class OpenAPIDemo {
 
+public class OpenAPIDemo {
+    private static final ch.qos.logback.classic.Logger logger =
+            (ch.qos.logback.classic.Logger)LoggerFactory.getLogger(OpenAPIDemo.class);
     public static void main(String[] args) {
         // Load the OpenAPI file
+        logger.setLevel(Level.INFO);
+
         try {
 
             String specsDir = "specs";
@@ -34,7 +42,8 @@ public class OpenAPIDemo {
                     toString().
                     substring(7);
 
-            System.out.println("File name = " + fileName);
+            logger.info("File name = {}", fileName);
+            logger.setLevel(Level.INFO);
             OpenAPI openAPI = parser.read(fileName);
 
 
@@ -43,9 +52,10 @@ public class OpenAPIDemo {
             StringBuilder pStr = new StringBuilder();
             for (var entry : schemas.entrySet()) {
                 String name = entry.getKey();
-                pStr.append("name:" + name);
+                pStr.append("name:").append(name);
                 Schema<?> s = entry.getValue();
                 String type = s.getType();
+                var description = s.getDescription();
                 String ref = s.get$ref();
                 var anyOf = s.getAnyOf();
                 var oneOf = s.getOneOf();
@@ -64,119 +74,81 @@ public class OpenAPIDemo {
                             break;
                         }
                         case "object": {
+                            //TODO
                             break;
                         }
                         case "array": {
-                            var description = s.getDescription();
-                            if (description != null) {
-                                pStr.append(", description:" + description);
-                            }
-                            var examples = s.getExamples();
-                            if (examples != null) {
-                                pStr.append("example: [");
-                                for (Object o : examples) {
-                                    pStr.append(o.toString() + ", ");
-                                }
-                                pStr.setLength(pStr.length() - 2);
-                                pStr.append("]");
-                            }
-
-                            var minItems = s.getMinItems();
-                            if (minItems != null) {
-                                pStr.append(", minItems:" + minItems.toString());
-                            }
-
-                            var maxItems = s.getMaxItems();
-                            if (maxItems != null) {
-                                pStr.append(", maxItems:" + maxItems.toString());
-                            }
-
-                            var nullable = s.getNullable();
-                            if (nullable != null) {
-                                pStr.append(", nullable:" + nullable.toString());
-                            }
-
-                            var uniqueItems = s.getUniqueItems();
-                            if (uniqueItems != null) {
-                                pStr.append(", uniqueItems:" + uniqueItems.toString());
-                            }
-                            var defaultVal = s.getDefault();
-                            if (defaultVal instanceof String) {
-                                pStr.append("Default: " + defaultVal.toString());
-                            }
-
-                            var items = s.getItems(); // loop on items
-                            if (items != null) {
-                                pStr.append(", items: {");
-                                var desc = items.getDescription();
-                                if (desc != null) {
-                                    pStr.append("description:" + desc + ", ");
-                                }
-                                var arrayType = items.getType();
-                                if (arrayType != null) {
-                                    pStr.append("array type:" + arrayType + ", ");
-                                    switch (type) {
-                                        case "string": {
-                                            processStringVal(s, pStr);
-                                            break;
-                                        }
-                                        case "integer": {
-                                            processIntegerVal(s, pStr);
-                                            break;
-                                        }
-                                        case "array": {
-                                            pStr.append("============");
-                                            break;
-                                        }
-                                        case "object": {
-                                            pStr.append("-------------");
-                                            break;
-                                        }
-                                        default: {
-                                            pStr.append("*************");
-
-                                        }
-                                    }
-                                } else {
-                                    var reference = items.get$ref();
-                                    if (reference != null) {
-                                        pStr.append("reference:" + reference + ", ");
-                                    }
-                                }
-
-
-
-
-                                pStr.setLength(pStr.length() - 2);
-                                pStr.append("}");
-                            }
-
+                            prossesArrayVal(s, pStr);
                             break;
                         }
-                        case "anyOf": {
+                        case "boolean": {
+                            prossesBooleanVal(s, pStr);
                             break;
                         }
-                        case "oneOf": {
-                            break;
+                        default: {
+                            logger.error("Undefined type value: {}", type);
                         }
-                        case "allOf": {
-                            break;
-                        }
-
                     }
                 } else if (ref != null) {
-                    pStr.append(", ref: " + ref);
+                    pStr.append(", ref: ").append(ref);
                     // TODO Handle References
-                } else if (!anyOf.isEmpty()) {
-                    pStr.append(", anyOf ");
+                } else if (anyOf != null) {
+                    pStr.append(", anyOf:");
+                    var d = s.getDescription();
+                    if (d != null) {
+                        pStr.append(" desc: ").append(d);
+                    }
+                    for (Schema<?> sc : anyOf) {
+                        pStr.append("{");
+                        var t = sc.getType();
+                        var r = sc.get$ref();
+                        var required = sc.getRequired();
+                        //each schema may have eiter type or reference
+                        var des = sc.getDescription();
+                        if (t != null) {
+                            pStr.append(" type: ").append(t);
+                            if (des != null) {
+                                pStr.append(", desc:").append(des);
+                            }
+                            var e = sc.getEnum();
+                            if (e != null) {
+                                pStr.append(" ENUM [");
+                                for (Object o : e) {
+                                    pStr.append(o.toString()).append(", ");
+                                }
+                                pStr.setLength(pStr.length() -2);
+                                pStr.append("]");
+
+                            }
+                        } else if (r != null) {
+                            pStr.append(" reference: ").append(r);
+                        }
+
+                        if (required != null) {
+                            pStr.append("Required: [");
+                            for (Object o : required) {
+                                pStr.append(o.toString()).append(", ");
+                            }
+                            pStr.setLength(pStr.length() -2);
+                            pStr.append("]");
+                        }
+                        pStr.append("},");
+                    }
                     //TODO handle anyOf
-                } else if (!oneOf.isEmpty()) {
+                } else if (oneOf != null) {
                     pStr.append(", oneOf ");
+                    for (Schema sc : oneOf) {
+
+                    }
                     //TODO handle oneOf
-                } else if (!allOf.isEmpty()) {
+                } else if (allOf != null) {
                     pStr.append(", allOf ");
+                    for (Schema sc : allOf) {
+
+                    }
                     //TODO handle allOf
                 } else {
+                    logger.error("Undefined case");
                     pStr.append(",NO TYPE *************************************");
                 }
 
@@ -193,7 +165,7 @@ public class OpenAPIDemo {
 //                        ", Type: " + schema.getType() +
 //                        ", Description: " + schema.getDescription() +
 //                        ", Props : " + pStr.toString());
-                System.out.println(pStr.toString());
+                logger.info("{}", pStr);
                 pStr.delete(0, pStr.length()); // empty buffer
             }
 
@@ -219,7 +191,7 @@ public class OpenAPIDemo {
 //                }
 //            }
         } catch (Exception e) {
-            System.out.println("got exception: " + e.toString());
+            logger.error("{}", Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.joining("\n")));
         }
     }
 }

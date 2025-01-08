@@ -3992,6 +3992,7 @@ components:
       description: Represents the type of IMS Public Identity
       anyOf:
         - type: string
+          description: jus to test it
           enum:
           - DISTINCT_IMPU
           - DISTINCT_PSI
