@@ -11,12 +11,16 @@ public class ProcessXxxOf {
 
     private ProcessXxxOf() {}
 
-    public static void processXxxVal(StringBuilder pStr, List<Schema> any, String description) {
-        if (description != null) {
-            pStr.append("{ desc: ").append(description);
-        }
+    public static void processXxxVal(StringBuilder pStr, List<Schema> any) {
+//        if (description != null) {
+//            pStr.append("{ desc: ").append(description);
+//        }
         for (Schema<?> sc : any) {
             pStr.append(" {");
+            var desc = sc.getDescription();
+            if (desc != null) {
+                pStr.append("{ desc: ").append(desc);
+            }
             var t = sc.getType();
             var r = sc.get$ref();
             var required = sc.getRequired();

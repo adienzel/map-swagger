@@ -3992,13 +3992,15 @@ components:
       description: Represents the type of IMS Public Identity
       anyOf:
         - type: string
-          description: jus to test it
+          description: just to test it
           enum:
           - DISTINCT_IMPU
           - DISTINCT_PSI
           - WILDCARDED_IMPU
           - WILDCARDED_PSI
         - type: string
+          description: other test
+          pattern: "[0-9][a-z]{15}"
 
     PrivateIdentityType:
       description: Represents the type of IMS Private Identity (IMPI or IMSI)

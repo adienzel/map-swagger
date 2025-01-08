@@ -15,6 +15,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 
+import static com.example.ProcerssType.processTypeVal;
 import static com.example.ProcessArray.prossesArrayVal;
 import static com.example.ProcessBoolean.prossesBooleanVal;
 import static com.example.ProcessInteger.processIntegerVal;
@@ -55,52 +56,27 @@ public class OpenAPIDemo {
                 String name = entry.getKey();
                 pStr.append("name:").append(name);
                 Schema<?> s = entry.getValue();
-                String type = s.getType();
                 var description = s.getDescription();
                 String ref = s.get$ref();
                 var anyOf = s.getAnyOf();
                 var oneOf = s.getOneOf();
                 var allOf = s.getAllOf();
 
-                if (type != null) {
-                    pStr.append(", type:" + type);
-                    switch (type) {
-                        case "string": {
-                            processStringVal(s, pStr);
-                            break;
-                        }
-                        case "integer": {
-                            processIntegerVal(s, pStr);
-                            break;
-                        }
-                        case "object": {
-                            processObjectVal(s, pStr);
-                            break;
-                        }
-                        case "array": {
-                            prossesArrayVal(s, pStr);
-                            break;
-                        }
-                        case "boolean": {
-                            prossesBooleanVal(s, pStr);
-                            break;
-                        }
-                        default: {
-                            logger.error("Undefined type value: {}", type);
-                        }
-                    }
-                } else if (ref != null) {
+                if (s.getType() != null) {
+                    processTypeVal(s, pStr);
+                }
+                else if (ref != null) {
                     pStr.append(", ref: ").append(ref);
                     // TODO Handle References
                 } else if (anyOf != null) {
                     pStr.append(", anyOf:");
-                    processXxxVal(pStr, anyOf, description);
+                    processXxxVal(pStr, anyOf);
                 } else if (oneOf != null) {
                     pStr.append(", oneOf ");
-                    processXxxVal(pStr, oneOf, description);
+                    processXxxVal(pStr, oneOf);
                 } else if (allOf != null) {
                     pStr.append(", allOf ");
-                    processXxxVal(pStr, allOf, description);
+                    processXxxVal(pStr, allOf);
                 } else {
                     logger.error("Undefined case");
                     pStr.append(",NO TYPE *************************************");
