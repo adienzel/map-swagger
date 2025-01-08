@@ -1,8 +1,11 @@
 package com.example;
 
 import io.swagger.v3.oas.models.media.Schema;
+import org.slf4j.LoggerFactory;
 
 public class ProcessBoolean {
+    private static final ch.qos.logback.classic.Logger logger =
+            (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ProcessBoolean.class);
 
     private ProcessBoolean(){}
 

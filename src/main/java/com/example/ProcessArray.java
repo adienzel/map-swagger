@@ -3,9 +3,12 @@ package com.example;
 import static com.example.ProcessInteger.processIntegerVal;
 import static com.example.ProcessString.processStringVal;
 import io.swagger.v3.oas.models.media.Schema;
+import org.slf4j.LoggerFactory;
 
 
 public class ProcessArray {
+    private static final ch.qos.logback.classic.Logger logger =
+            (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ProcessArray.class);
 
     private ProcessArray(){}
 

@@ -5,6 +5,7 @@ import io.swagger.v3.parser.ResolverCache;
 import io.swagger.v3.parser.core.models.SwaggerParseResult;
 import io.swagger.v3.parser.util.RefUtils;
 import io.swagger.v3.oas.models.OpenAPI;
+import org.slf4j.LoggerFactory;
 
 /**
  * CustomResolver use to add prefix to the reference url used in openAPI
@@ -14,6 +15,9 @@ import io.swagger.v3.oas.models.OpenAPI;
  *
  */
 public class CustomResolver extends ResolverCache {
+    private static final ch.qos.logback.classic.Logger logger =
+            (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(CustomResolver.class);
+
     private final String globalPrefix;
 
     public CustomResolver(OpenAPI openAPI, String globalPrefix) {

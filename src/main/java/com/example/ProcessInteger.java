@@ -1,8 +1,12 @@
 package com.example;
 
 import io.swagger.v3.oas.models.media.Schema;
+import org.slf4j.LoggerFactory;
 
 public class ProcessInteger {
+    private static final ch.qos.logback.classic.Logger logger =
+            (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ProcessInteger.class);
+
     private  ProcessInteger() {}
     public static void processIntegerVal(Schema<?> s, StringBuilder pStr) {
         var description = s.getDescription();
@@ -25,6 +29,16 @@ public class ProcessInteger {
         if (nullable != null) {
             pStr.append(", nullable:").append(nullable.toString());
         }
+        var readOnly = s.getReadOnly();
+        if (readOnly != null) {
+            pStr.append(", readOnly:").append(readOnly);
+        }
+
+        var writeOnly = s.getWriteOnly();
+        if (writeOnly != null) {
+            pStr.append(", writeOnly").append(writeOnly);
+        }
+
         if (enumValues != null) {
             pStr.append(", ENUM: [");
             for (Object e : enumValues) {

@@ -1,4 +1,6 @@
 package com.example;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -6,6 +8,9 @@ import java.io.InputStream;
 import java.net.URL;
 
 public class FileDownloader {
+    private static final ch.qos.logback.classic.Logger logger =
+            (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(FileDownloader.class);
+
     public static void main(String[] args) {
         String fileURL = "https://example.com/file.zip"; // Replace with your URL
         String saveDir = "path/to/your/save/directory/file.zip"; // Replace with your save directory

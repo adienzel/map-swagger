@@ -2,6 +2,7 @@ package com.example;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,8 @@ import static com.example.ProcessArray.prossesArrayVal;
 import static com.example.ProcessBoolean.prossesBooleanVal;
 import static com.example.ProcessInteger.processIntegerVal;
 import static com.example.ProcessString.processStringVal;
-
+import static com.example.ProcessXxxOf.processXxxVal;
+import static com.example.processObject.processObjectVal;
 
 
 public class OpenAPIDemo {
@@ -29,7 +31,6 @@ public class OpenAPIDemo {
         logger.setLevel(Level.INFO);
 
         try {
-
             String specsDir = "specs";
             String inputFile = "TS29562_Nhss_imsSDM.yaml";
 
@@ -63,7 +64,6 @@ public class OpenAPIDemo {
 
                 if (type != null) {
                     pStr.append(", type:" + type);
-                    //TODO handle types (object, array, string, integer, boolean
                     switch (type) {
                         case "string": {
                             processStringVal(s, pStr);
@@ -74,7 +74,7 @@ public class OpenAPIDemo {
                             break;
                         }
                         case "object": {
-                            //TODO
+                            processObjectVal(s, pStr);
                             break;
                         }
                         case "array": {
@@ -94,59 +94,13 @@ public class OpenAPIDemo {
                     // TODO Handle References
                 } else if (anyOf != null) {
                     pStr.append(", anyOf:");
-                    var d = s.getDescription();
-                    if (d != null) {
-                        pStr.append(" desc: ").append(d);
-                    }
-                    for (Schema<?> sc : anyOf) {
-                        pStr.append("{");
-                        var t = sc.getType();
-                        var r = sc.get$ref();
-                        var required = sc.getRequired();
-                        //each schema may have eiter type or reference
-                        var des = sc.getDescription();
-                        if (t != null) {
-                            pStr.append(" type: ").append(t);
-                            if (des != null) {
-                                pStr.append(", desc:").append(des);
-                            }
-                            var e = sc.getEnum();
-                            if (e != null) {
-                                pStr.append(" ENUM [");
-                                for (Object o : e) {
-                                    pStr.append(o.toString()).append(", ");
-                                }
-                                pStr.setLength(pStr.length() -2);
-                                pStr.append("]");
-
-                            }
-                        } else if (r != null) {
-                            pStr.append(" reference: ").append(r);
-                        }
-
-                        if (required != null) {
-                            pStr.append("Required: [");
-                            for (Object o : required) {
-                                pStr.append(o.toString()).append(", ");
-                            }
-                            pStr.setLength(pStr.length() -2);
-                            pStr.append("]");
-                        }
-                        pStr.append("},");
-                    }
-                    //TODO handle anyOf
+                    processXxxVal(pStr, anyOf, description);
                 } else if (oneOf != null) {
                     pStr.append(", oneOf ");
-                    for (Schema sc : oneOf) {
-
-                    }
-                    //TODO handle oneOf
+                    processXxxVal(pStr, oneOf, description);
                 } else if (allOf != null) {
                     pStr.append(", allOf ");
-                    for (Schema sc : allOf) {
-
-                    }
-                    //TODO handle allOf
+                    processXxxVal(pStr, allOf, description);
                 } else {
                     logger.error("Undefined case");
                     pStr.append(",NO TYPE *************************************");
