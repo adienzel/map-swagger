@@ -3,8 +3,11 @@ package com.example;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import io.swagger.v3.oas.annotations.media.SchemaProperties;
+import io.swagger.v3.oas.models.media.StringSchema;
 import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Level;
 
@@ -61,6 +64,12 @@ public class OpenAPIDemo {
                 var anyOf = s.getAnyOf();
                 var oneOf = s.getOneOf();
                 var allOf = s.getAllOf();
+                Map<String, Schema> p = s.getProperties();
+                for (var e: p.entrySet()) {
+
+
+
+                }
 
                 if (s.getType() != null) {
                     processTypeVal(s, pStr);

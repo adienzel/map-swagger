@@ -2,3 +2,4 @@
 /.idea/
 /.vscode/
 /target/*
+/target/maven-status/

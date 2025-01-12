@@ -1,6 +1,7 @@
 package com.example;
 
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import org.slf4j.LoggerFactory;
 
 import static com.example.ProcessArray.prossesArrayVal;
@@ -16,7 +17,8 @@ public class ProcerssType {
     private ProcerssType() {}
 
     public static void processTypeVal(Schema<?> s, StringBuilder pStr) {
-        var type = s.getType();
+        StringSchema stringSchema = (StringSchema) s;
+        var type = stringSchema.getType();
         if (type != null) {
             pStr.append(", type:" + type);
             switch (type) {
