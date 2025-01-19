@@ -18,6 +18,11 @@ servers:
       apiRoot:
         default: https://example.com
         description: apiRoot as defined in clause 4.4 of 3GPP TS 29.501.
+  - url: '{apiRoot}/nhss-ims-sdm/v2'
+    variables:
+      apiRoot:
+        default: https://example.com
+        description: apiRoot as defined in clause 4.4 of 3GPP TS 29.501.
 
 security:
   - {}

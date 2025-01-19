@@ -54,17 +54,17 @@ public class processObject {
         var anyOf = s.getAnyOf();
         if (anyOf != null) {
             pStr.append(", anyOf ");
-            processXxxVal(pStr, anyOf);
+            processXxxVal(pStr, null, anyOf);
         }
         var oneOf = s.getOneOf();
         if (oneOf != null) {
             pStr.append(", oneOf ");
-            processXxxVal(pStr, oneOf);
+            processXxxVal(pStr, null, oneOf);
         }
         var allOf = s.getAllOf();
         if (allOf != null) {
             pStr.append(", allOf ");
-            processXxxVal(pStr, allOf);
+            processXxxVal(pStr, null, allOf);
         }
         var discriminator = s.getDiscriminator();
         if (discriminator != null) {

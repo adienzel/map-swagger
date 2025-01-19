@@ -17,16 +17,16 @@ public class ProcerssType {
     private ProcerssType() {}
 
     public static void processTypeVal(Schema<?> s, StringBuilder pStr) {
-        StringSchema stringSchema = (StringSchema) s;
-        var type = stringSchema.getType();
+        //StringSchema stringSchema = (StringSchema) s;
+        var type = s.getType();
         if (type != null) {
-            pStr.append(", type:" + type);
+            pStr.append(" type:" + type);
             switch (type) {
                 case "string": {
                     processStringVal(s, pStr);
                     break;
                 }
-                case "integer": {
+                case "integer", "number": {
                     processIntegerVal(s, pStr);
                     break;
                 }

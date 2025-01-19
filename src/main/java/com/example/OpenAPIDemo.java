@@ -37,6 +37,7 @@ public class OpenAPIDemo {
         try {
             String specsDir = "specs";
             String inputFile = "TS29562_Nhss_imsSDM.yaml";
+            //String inputFile = "TS28312_IntentNrm.yaml";
 
             OpenAPIV3Parser parser = new OpenAPIV3Parser();
             String fileName = Paths.get("").
@@ -64,13 +65,6 @@ public class OpenAPIDemo {
                 var anyOf = s.getAnyOf();
                 var oneOf = s.getOneOf();
                 var allOf = s.getAllOf();
-                Map<String, Schema> p = s.getProperties();
-                for (var e: p.entrySet()) {
-
-
-
-                }
-
                 if (s.getType() != null) {
                     processTypeVal(s, pStr);
                 }
@@ -79,31 +73,17 @@ public class OpenAPIDemo {
                     // TODO Handle References
                 } else if (anyOf != null) {
                     pStr.append(", anyOf:");
-                    processXxxVal(pStr, anyOf);
+                    processXxxVal(pStr, description, anyOf);
                 } else if (oneOf != null) {
                     pStr.append(", oneOf ");
-                    processXxxVal(pStr, oneOf);
+                    processXxxVal(pStr, description, oneOf);
                 } else if (allOf != null) {
                     pStr.append(", allOf ");
-                    processXxxVal(pStr, allOf);
+                    processXxxVal(pStr, description, allOf);
                 } else {
                     logger.error("Undefined case");
                     pStr.append(",NO TYPE *************************************");
                 }
-
-
-//                System.out.println("key :" + entry.getKey() + " val = " + entry.getValue());
-//                final Map<String, Schema> properties = schema.getProperties();
-//                StringBuilder pStr = new StringBuilder();
-//                if (properties != null) {
-//                    for (final Map.Entry<String, Schema> p : properties.entrySet()) {
-//                        pStr.append(" name: ").append(p.getKey()).append(" value = ").append(p.getValue().get$ref());
-//                    }
-//                }
-//                System.out.println("Schema: " + name +
-//                        ", Type: " + schema.getType() +
-//                        ", Description: " + schema.getDescription() +
-//                        ", Props : " + pStr.toString());
                 logger.info("{}", pStr);
                 pStr.delete(0, pStr.length()); // empty buffer
             }

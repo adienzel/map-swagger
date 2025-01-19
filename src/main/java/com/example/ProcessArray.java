@@ -2,6 +2,8 @@ package com.example;
 
 import static com.example.ProcessInteger.processIntegerVal;
 import static com.example.ProcessString.processStringVal;
+import static com.example.processObject.processObjectVal;
+
 import io.swagger.v3.oas.models.media.Schema;
 import org.slf4j.LoggerFactory;
 
@@ -71,11 +73,11 @@ public class ProcessArray {
                         break;
                     }
                     case "array": {
-                        pStr.append("============");
+                        prossesArrayVal(s, pStr);
                         break;
                     }
                     case "object": {
-                        pStr.append("-------------");
+                        processObjectVal(s, pStr);
                         break;
                     }
                     default: {
