@@ -21,7 +21,7 @@ servers:
   - url: '{apiRoot}/nhss-ims-sdm/v2'
     variables:
       apiRoot:
-        default: https://example.com
+        default: https://kuku.example.com
         description: apiRoot as defined in clause 4.4 of 3GPP TS 29.501.
 
 security:
@@ -4161,8 +4161,8 @@ components:
       anyOf:
         - type: string
           enum:
-          - CHARGING_DATA
-          - IFC_DATA
-          - TRACE_DATA
-          - PRIORITY_DATA
+            - CHARGING_DATA
+            - IFC_DATA
+            - TRACE_DATA
+            - PRIORITY_DATA
         - type: string
