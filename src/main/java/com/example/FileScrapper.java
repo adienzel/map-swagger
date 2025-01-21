@@ -6,10 +6,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.LoggerFactory;
 
+import ch.qos.logback.classic.Level;
+
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class FileScrapper {
@@ -17,6 +17,8 @@ public class FileScrapper {
             (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(FileScrapper.class);
 
     public static HashSet<String> getFileList(String url, Pattern pattern) throws IOException {
+        logger.setLevel(Level.INFO);
+        logger.info("Getting file list from: {}", url);
         HashSet<String> fileNames = new HashSet<String>();
         Document doc = Jsoup.connect(url).get();
 

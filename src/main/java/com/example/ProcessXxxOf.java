@@ -3,6 +3,8 @@ package com.example;
 import io.swagger.v3.oas.models.media.Schema;
 import org.slf4j.LoggerFactory;
 
+import ch.qos.logback.classic.Level;
+
 import java.util.List;
 
 import static com.example.ProcerssType.processTypeVal;
@@ -14,6 +16,8 @@ public class ProcessXxxOf {
     private ProcessXxxOf() {}
 
     public static void processXxxVal(StringBuilder pStr, String description, List<Schema> any) {
+        logger.setLevel(Level.INFO);
+        logger.debug("Processing xxx of {}", any);
         if (description != null) {
             pStr.append("{ desc: ").append(description);
         }
@@ -27,23 +31,10 @@ public class ProcessXxxOf {
             var r = sc.get$ref();
             var required = sc.getRequired();
             //each schema may have eiter type or reference
-            var des = sc.getDescription();
+            //var des = sc.getDescription();
             if (t != null) {
                 processTypeVal(sc, pStr);
 
-//                pStr.append("type: ").append(t);
-//                if (des != null) {
-//                    pStr.append(", desc:").append(des);
-//                }
-//                var e = sc.getEnum();
-//                if (e != null) {
-//                    pStr.append(" ENUM [");
-//                    for (Object o : e) {
-//                        pStr.append(o.toString()).append(", ");
-//                    }
-//                    pStr.setLength(pStr.length() -2);
-//                    pStr.append("]");
-//                }
             } else if (r != null) {
                 pStr.append(" reference: ").append(r);
             }

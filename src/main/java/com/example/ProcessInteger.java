@@ -3,12 +3,16 @@ package com.example;
 import io.swagger.v3.oas.models.media.Schema;
 import org.slf4j.LoggerFactory;
 
+import ch.qos.logback.classic.Level;
+
 public class ProcessInteger {
     private static final ch.qos.logback.classic.Logger logger =
             (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ProcessInteger.class);
 
     private  ProcessInteger() {}
     public static void processIntegerVal(Schema<?> s, StringBuilder pStr) {
+        logger.setLevel(Level.INFO);
+        logger.debug("Processing integer {}");
         var description = s.getDescription();
         var format = s.getFormat();
         var pattern = s.getPattern();

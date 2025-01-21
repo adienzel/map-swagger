@@ -3,7 +3,6 @@ package com.example;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.parser.util.RefUtils;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +28,6 @@ public class RefCollector {
     public static void printTree(String fileName) throws IOException {
         YAMLMapper yamlMapper = new YAMLMapper(new YAMLFactory());
         file = fileName;
-        //JsonNode rootNode = yamlMapper.readTree(new File(fileName));
         printYamlTree(yamlMapper.readTree(new File(fileName)), "");
     }
 
@@ -72,19 +70,14 @@ public class RefCollector {
             String domainAndPath = parts[0];
             String localPart = "#" + (parts.length > 1 ? parts[1] : "");
 
-//            logger.debug("Remote reference found:");
-//            logger.debug("Domain and path: {}", domainAndPath);
-//            logger.debug("Local part: {}", localPart);
             final String[] schemaNames = localPart.split("/");
             schemaName = schemaNames[schemaNames.length - 1];
             ref = new Reference(false, file, refValue, domainAndPath, localPart, schemaName);
         } else {
             final String[] schemaNames = refValue.split("/");
             schemaName = schemaNames[schemaNames.length - 1];
-//            logger.debug("Local reference found: {}", refValue);
             ref = new Reference(true, file, refValue, null, refValue, schemaName);
         }
-        //logger.debug("Schema name = {}\n", schemaName);
         return ref;
     }
 
@@ -111,10 +104,8 @@ public class RefCollector {
         } else if (node.isArray()) {
             for (JsonNode arrayElement : node) {
                 printYamlTree(arrayElement, indent);
-                //indent += ">";
             }
         } else {
-            //System.out.println(indent + node.asText());
             System.out.println(indent + node.asText());
         }
     }

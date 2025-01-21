@@ -1,8 +1,9 @@
 package com.example;
 
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
 import org.slf4j.LoggerFactory;
+
+import ch.qos.logback.classic.Level;
 
 import static com.example.ProcessArray.prossesArrayVal;
 import static com.example.ProcessBoolean.prossesBooleanVal;
@@ -17,6 +18,7 @@ public class ProcerssType {
     private ProcerssType() {}
 
     public static void processTypeVal(Schema<?> s, StringBuilder pStr) {
+        logger.setLevel(Level.INFO);
         //StringSchema stringSchema = (StringSchema) s;
         var type = s.getType();
         if (type != null) {

@@ -1,5 +1,7 @@
 package com.example;
 import org.slf4j.LoggerFactory;
+import java.net.URI;
+import ch.qos.logback.classic.Level;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
@@ -11,20 +13,10 @@ public class FileDownloader {
     private static final ch.qos.logback.classic.Logger logger =
             (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(FileDownloader.class);
 
-    public static void main(String[] args) {
-        String fileURL = "https://example.com/file.zip"; // Replace with your URL
-        String saveDir = "path/to/your/save/directory/file.zip"; // Replace with your save directory
-        try {
-            downloadFile(fileURL, saveDir);
-            System.out.println("File downloaded successfully!");
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Failed to download file.");
-        }
-    }
-
     public static void downloadFile(String fileURL, String saveDir) throws IOException {
-        URL url = new URL(fileURL);
+        URL url = URI.create(fileURL).toURL();
+        logger.setLevel(Level.INFO);
+        logger.debug("Downloading file from: {}", url);
         url.getFile();
         InputStream in = new BufferedInputStream(url.openStream());
         FileOutputStream out = new FileOutputStream(saveDir);
@@ -37,5 +29,3 @@ public class FileDownloader {
         out.close();
     }
 }
-
-

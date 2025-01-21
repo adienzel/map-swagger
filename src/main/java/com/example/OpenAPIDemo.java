@@ -2,29 +2,17 @@ package com.example;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-import io.swagger.v3.oas.annotations.media.SchemaProperties;
-import io.swagger.v3.oas.models.media.StringSchema;
 import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Level;
 
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 
 import static com.example.ProcerssType.processTypeVal;
-import static com.example.ProcessArray.prossesArrayVal;
-import static com.example.ProcessBoolean.prossesBooleanVal;
-import static com.example.ProcessInteger.processIntegerVal;
-import static com.example.ProcessString.processStringVal;
 import static com.example.ProcessXxxOf.processXxxVal;
-import static com.example.processObject.processObjectVal;
 
 
 public class OpenAPIDemo {

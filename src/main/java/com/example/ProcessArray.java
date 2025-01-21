@@ -7,6 +7,8 @@ import static com.example.processObject.processObjectVal;
 import io.swagger.v3.oas.models.media.Schema;
 import org.slf4j.LoggerFactory;
 
+import ch.qos.logback.classic.Level;
+
 
 public class ProcessArray {
     private static final ch.qos.logback.classic.Logger logger =
@@ -15,6 +17,8 @@ public class ProcessArray {
     private ProcessArray(){}
 
     public static void prossesArrayVal(Schema<?> s, StringBuilder pStr) {
+        logger.setLevel(Level.INFO);
+        logger.debug("Processing array {}");
         var description = s.getDescription();
         if (description != null) {
             pStr.append(", description:").append(description);

@@ -3,6 +3,8 @@ package com.example;
 import io.swagger.v3.oas.models.media.Schema;
 import org.slf4j.LoggerFactory;
 
+import ch.qos.logback.classic.Level;
+
 import java.util.Map;
 
 import static com.example.ProcerssType.processTypeVal;
@@ -15,6 +17,8 @@ public class processObject {
     private processObject() {}
 
     public static void processObjectVal(Schema<?> s, StringBuilder pStr) {
+        logger.setLevel(Level.INFO);
+        logger.debug("Processing object {}");
         var description = s.getDescription();
         if (description != null) {
             pStr.append(", description:").append(description);
@@ -68,32 +72,32 @@ public class processObject {
         }
         var discriminator = s.getDiscriminator();
         if (discriminator != null) {
-
+            logger.debug("\"Discriminator\" parsing not supported yet {}", discriminator);
         }
         var nullable = s.getNullable();
         if (nullable != null) {
-
+            logger.debug("\"Nullable\" parsing not supported yet {}", nullable);
         }
         var Not = s.getNot();
         if (Not != null) {
-
+            logger.debug("\"Not\" parsing not supported yet {}", Not);
         }
         var additionalProperties = s.getAdditionalProperties();
         if (additionalProperties != null) {
-
+            logger.debug("\"AdditionalProperties\" parsing not supported yet {}", additionalProperties);
         }
         var externalDocs = s.getExternalDocs();
         if (externalDocs != null) {
-
+            logger.debug("\"ExternalDocs\" parsing not supported yet {}", externalDocs);
         }
         var deprecated = s.getDeprecated();
         if (deprecated != null) {
-
+            logger.debug("\"Deprecated\" parsing not supported yet {}", deprecated);
         }
 
         var minProperties = s.getMinProperties();
         if (minProperties != null) {
-
+            logger.debug("\"MinProperties\" parsing not supported yet {}", minProperties);
         }
 
 

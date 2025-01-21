@@ -3,6 +3,8 @@ package com.example;
 import io.swagger.v3.oas.models.media.Schema;
 import org.slf4j.LoggerFactory;
 
+import ch.qos.logback.classic.Level;
+
 public class ProcessBoolean {
     private static final ch.qos.logback.classic.Logger logger =
             (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ProcessBoolean.class);
@@ -10,6 +12,8 @@ public class ProcessBoolean {
     private ProcessBoolean(){}
 
     public static void prossesBooleanVal(Schema<?> s, StringBuilder pStr) {
+        logger.setLevel(Level.INFO);
+        logger.debug("Processing boolean {}");
         var description = s.getDescription();
         if (description != null) {
             pStr.append(", description:").append(description);
