@@ -94,7 +94,11 @@ public class YamlIndentationProcessor {
     private static void printIndentedLine(List<String> strings) {
         StringBuilder s = new StringBuilder();
         for (String e : strings) {
-           s.append(e).append(".");
+            int index = s.indexOf(": ");
+            if (index != -1) {
+                s.replace(index, index + ": ".length(), ".");
+            }
+            s.append(e).append(".");
         }
         if (!s.isEmpty()) {
             s.deleteCharAt(s.length() -1 );
@@ -146,6 +150,7 @@ public class YamlIndentationProcessor {
         }
 
         if (line.contains(DESCRIPTION)) {
+            line = line.replaceAll("(?<=description): ", ".");
             buildDescriptor(line, reader, modifiedLines);
         } else {
             modifiedLines.add(line);
@@ -178,6 +183,9 @@ public class YamlIndentationProcessor {
                     concatenatedDescription.append(SEPARATOR).append(line.trim());
                 } else {
                     modifiedLines.add(concatenatedDescription.toString()); // the las line in description
+                    if (line.contains("pattern: ")) {
+                        line = line.replaceAll("(?<=pattern): ", ".");
+                    }
                     modifiedLines.add(line); // this is the next line in the file we can't ignore it
                     break;
                 }
